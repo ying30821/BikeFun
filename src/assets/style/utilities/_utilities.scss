@@ -1,0 +1,36 @@
+.search-line::after {
+  background: $gray-300;
+  content: "";
+  width: 1px;
+  height: 20px;
+  margin-left: 5px;
+}
+
+.scrollbar {
+  height: calc(100vh - 450px);
+  overflow-y: scroll;
+}
+
+.scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 4px;
+  padding-right: 1px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: $primary;
+  border-radius: 15px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: $secondary;
+  border-radius: 12px;
+}
+
+#map {
+  width: 100%;
+  height: calc(100vh - 132px);
+}
+.z-index-500 {
+  z-index: 500 !important;
+}
