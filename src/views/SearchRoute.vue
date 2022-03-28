@@ -66,11 +66,17 @@ export default {
     getRouteData(city = 'Taipei', keyword = '') {
       this.isLoading = true;
       const api = `${process.env.VUE_APP_BASEAPI}/Cycling/Shape/${city}?%24filter=contains(RouteName%2C'${keyword}')&%24format=JSON`;
-      this.axios.get(api).then((res) => {
-        this.isLoading = false;
-        this.apiData = res.data;
-        this.renderRouteCard();
-      });
+      this.axios.get(api)
+        .then((res) => {
+          this.apiData = res.data;
+          this.renderRouteCard();
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+        .then(() => {
+          this.isLoading = false;
+        });
     },
     renderRouteCard() {
       this.getPage();

@@ -1,5 +1,5 @@
 <template>
-  <nav class="py-1">
+  <nav class="py-1" v-if="pages.total_page > 0">
   <ul class="pagination justify-content-center gap-0.5 mb-0">
     <li class="page-item" :class="{disabled : pages.current_page === 1}">
       <a href="#" class="page-link d-inline-flex rounded-2 px-0.25"

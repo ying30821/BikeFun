@@ -36,7 +36,6 @@
 import L from 'leaflet';
 import {
   bikeIcon,
-  getCurrentPosition,
   initMap,
   initMarkerLayer,
 } from '@/methods/map';
@@ -110,68 +109,68 @@ export default {
       if (this.markerLayer) {
         this.markerLayer.clearLayers();
       }
-      const lon = this.pagination.current_page_data[0].StationPosition.PositionLon;
-      const lat = this.pagination.current_page_data[0].StationPosition.PositionLat;
-      this.map.setView([lat, lon], 18);
-
-      this.apiData.forEach((item) => {
-        const itemLon = item.StationPosition.PositionLon;
-        const itemLat = item.StationPosition.PositionLat;
-        this.markerLayer.addLayer(
-          L.marker([itemLat, itemLon], { icon: bikeIcon, id: item.StationUID }).bindPopup(`
-            <div class="p-0.75">
-              <h5 class="h4">${item.StationName.Zh_tw}</h5>
-              <p class="fs-7 text-dark d-flex align-items-center mt-0 mb-0.5">
-              <i class="bi bi-geo-alt-fill text-primary fs-4 me-0.5"></i>${item.StationAddress.Zh_tw}
-              </p>
-              <p class="fs-7 text-dark d-flex align-items-center mt-0 mb-0.75">
-              <i class="material-icons-outlined text-primary fs-4 me-0.5">history</i>${item.UpdateTime}
-              </p>
-              <div class="d-flex gap-0.5 mb-0.75">
-                ${item.ServiceStatus === 0 ? '<p class="border border-gray-600 bg-gray-300 rounded-2 text-gray-600 fs-7 fw-normal px-0.5 py-0.25 my-0">停止營運</p>' : ''}
-                ${item.ServiceStatus === 1 ? '<p class="border border-primary bg-secondary rounded-2 text-primary fs-7 fw-normal px-0.5 py-0.25 my-0">正常營運</p>' : ''}
-                ${item.ServiceStatus === 2 ? '<p class="border border-gray-600 bg-gray-300 rounded-2 text-gray-600 fs-7 fw-normal px-0.5 py-0.25 my-0">暫停營運</p>' : ''}
-                ${item.AvailableRentBikes > 1 ? '<p class="border border-primary bg-secondary rounded-2 text-primary fs-7 fw-normal px-0.5 py-0.25 my-0">尚有單車</p>' : ''}
-                ${item.AvailableRentBikes === 0 ? '<p class="border border-danger bg-notify-danger rounded-2 text-danger fs-7 fw-normal px-0.5 py-0.25 my-0">已無單車</p>' : ''}
-                ${item.AvailableReturnBikes === 0 ? '<p class="border border-warning bg-notify-warning rounded-2 text-warning fs-7 fw-normal px-0.5 py-0.25 my-0">車位已滿</p>' : ''}
-              </div>
-              <div class="d-flex">
-                <p class="border border-primary rounded-3 fs-6 text-primary text-center w-50 p-0.25 me-1 my-0">可借單車
-                  <span class="d-block fs-3 text-black mt-0.25">${item.AvailableRentBikes}</span>
+      if (this.apiData.length > 0) {
+        const lon = this.pagination.current_page_data[0].StationPosition.PositionLon;
+        const lat = this.pagination.current_page_data[0].StationPosition.PositionLat;
+        if (lon && lat) {
+          this.map.setView([lat, lon], 18);
+        }
+        this.apiData.forEach((item) => {
+          const itemLon = item.StationPosition.PositionLon;
+          const itemLat = item.StationPosition.PositionLat;
+          this.markerLayer.addLayer(
+            L.marker([itemLat, itemLon], { icon: bikeIcon, id: item.StationUID }).bindPopup(`
+              <div class="p-0.75">
+                <h5 class="h4">${item.StationName.Zh_tw}</h5>
+                <p class="fs-7 text-dark d-flex align-items-center mt-0 mb-0.5">
+                <i class="bi bi-geo-alt-fill text-primary fs-4 me-0.5"></i>${item.StationAddress.Zh_tw}
                 </p>
-                <p class="border border-primary rounded-3 fs-6 text-primary text-center w-50 p-0.25 m-0">可停車位
-                  <span class="d-block fs-3 text-black mt-0.25">${item.AvailableReturnBikes}</span>
+                <p class="fs-7 text-dark d-flex align-items-center mt-0 mb-0.75">
+                <i class="material-icons-outlined text-primary fs-4 me-0.5">history</i>${item.UpdateTime}
                 </p>
+                <div class="d-flex gap-0.5 mb-0.75">
+                  ${item.ServiceStatus === 0 ? '<p class="border border-gray-600 bg-gray-300 rounded-2 text-gray-600 fs-7 fw-normal px-0.5 py-0.25 my-0">停止營運</p>' : ''}
+                  ${item.ServiceStatus === 1 ? '<p class="border border-primary bg-secondary rounded-2 text-primary fs-7 fw-normal px-0.5 py-0.25 my-0">正常營運</p>' : ''}
+                  ${item.ServiceStatus === 2 ? '<p class="border border-gray-600 bg-gray-300 rounded-2 text-gray-600 fs-7 fw-normal px-0.5 py-0.25 my-0">暫停營運</p>' : ''}
+                  ${item.AvailableRentBikes > 1 ? '<p class="border border-primary bg-secondary rounded-2 text-primary fs-7 fw-normal px-0.5 py-0.25 my-0">尚有單車</p>' : ''}
+                  ${item.AvailableRentBikes === 0 ? '<p class="border border-danger bg-notify-danger rounded-2 text-danger fs-7 fw-normal px-0.5 py-0.25 my-0">已無單車</p>' : ''}
+                  ${item.AvailableReturnBikes === 0 ? '<p class="border border-warning bg-notify-warning rounded-2 text-warning fs-7 fw-normal px-0.5 py-0.25 my-0">車位已滿</p>' : ''}
+                </div>
+                <div class="d-flex">
+                  <p class="border border-primary rounded-3 fs-6 text-primary text-center w-50 p-0.25 me-1 my-0">可借單車
+                    <span class="d-block fs-3 text-black mt-0.25">${item.AvailableRentBikes}</span>
+                  </p>
+                  <p class="border border-primary rounded-3 fs-6 text-primary text-center w-50 p-0.25 m-0">可停車位
+                    <span class="d-block fs-3 text-black mt-0.25">${item.AvailableReturnBikes}</span>
+                  </p>
+                </div>
               </div>
-            </div>
-          `),
-        );
-        this.map.addLayer(this.markerLayer);
-      });
+            `),
+          );
+          this.map.addLayer(this.markerLayer);
+        });
+      }
     },
     searchStn(searchData) {
       this.isLoading = true;
-      if (!searchData.city) {
-        Promise.all([this.getNearByStnData(this.myPos.lon, this.myPos.lat, searchData.keyword),
-          this.getNearByAvlData(this.myPos.lon, this.myPos.lat)])
-          .then((res) => {
-            const tempStnData = res[0].data;
-            const tempAvlData = res[1].data;
-            this.recombineStnData(tempStnData, tempAvlData);
-            this.renderStn();
-            this.isLoading = false;
-          });
-      } else {
-        Promise.all([this.getStnData(searchData.city, searchData.keyword),
-          this.getAvlData(searchData.city)])
-          .then((res) => {
-            const tempStnData = res[0].data;
-            const tempAvlData = res[1].data;
-            this.recombineStnData(tempStnData, tempAvlData);
-            this.renderStn();
-            this.isLoading = false;
-          });
+      let { city } = searchData;
+      if (!city) {
+        city = 'Taipei';
       }
+      Promise.all([this.getStnData(city, searchData.keyword),
+        this.getAvlData(city)])
+        .then((res) => {
+          const tempStnData = res[0].data;
+          const tempAvlData = res[1].data;
+          this.recombineStnData(tempStnData, tempAvlData);
+          this.renderStn();
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+        .then(() => {
+          this.isLoading = false;
+        });
     },
     setStnView(pos) {
       this.map.setView([pos.PositionLat, pos.PositionLon], 18);
@@ -192,26 +191,20 @@ export default {
     },
   },
   mounted() {
-    this.isLoading = true;
     this.map = initMap();
     this.markerLayer = initMarkerLayer();
     this.markerLayer.addTo(this.map);
     this.map.whenReady(() => {
       this.$refs.map.classList.add('d-none');
     });
-    getCurrentPosition().then((pos) => {
-      this.isLoading = false;
-      this.myPos.lon = pos.coords.longitude;
-      this.myPos.lat = pos.coords.latitude;
-      let searchData = {
-        city: '',
-        keyword: '',
-      };
-      if (this.indexSearch) {
-        searchData = JSON.parse(this.indexSearch);
-      }
-      return this.searchStn(searchData);
-    });
+    let searchData = {
+      city: '',
+      keyword: '',
+    };
+    if (this.indexSearch) {
+      searchData = JSON.parse(this.indexSearch);
+    }
+    this.searchStn(searchData);
   },
 };
 </script>
