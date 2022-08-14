@@ -65,7 +65,7 @@ export default {
   methods: {
     getRouteData(city = 'Taipei', keyword = '') {
       this.isLoading = true;
-      const api = `${process.env.VUE_APP_BASEAPI}/Cycling/Shape/${city}?%24filter=contains(RouteName%2C'${keyword}')&%24format=JSON`;
+      const api = `${process.env.VUE_APP_BASEAPI}/Cycling/Shape/City/${city}?%24filter=contains(RouteName%2C'${keyword}')&%24format=JSON`;
       this.axios.get(api)
         .then((res) => {
           this.apiData = res.data;

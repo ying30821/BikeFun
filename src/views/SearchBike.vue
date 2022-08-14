@@ -69,19 +69,19 @@ export default {
   },
   methods: {
     getStnData(city, keyword = '') {
-      const api = `${process.env.VUE_APP_BASEAPI}/Bike/Station/${city}?$filter=contains(StationName%2FZh_tw%2C'${keyword}')%20or%20contains(StationAddress%2FZh_tw%2C'${keyword}')&$format=JSON`;
+      const api = `${process.env.VUE_APP_BASEAPI}/Bike/Station/City/${city}?$filter=contains(StationName%2FZh_tw%2C'${keyword}')%20or%20contains(StationAddress%2FZh_tw%2C'${keyword}')&$format=JSON`;
       return this.axios.get(api);
     },
     getAvlData(city) {
-      const api = `${process.env.VUE_APP_BASEAPI}/Bike/Availability/${city}?%24format=JSON`;
+      const api = `${process.env.VUE_APP_BASEAPI}/Bike/Availability/City/${city}?%24format=JSON`;
       return this.axios.get(api);
     },
     getNearByStnData(longitude = 0, latitude = 0, keyword = '') {
-      const api = `${process.env.VUE_APP_BASEAPI}/Bike/Station/NearBy?$filter=contains(StationName%2FZh_tw%2C'${keyword}')%20or%20contains(StationAddress%2FZh_tw%2C'${keyword}')&$spatialFilter=nearby(${latitude},${longitude},1000)&$format=JSON`;
+      const api = `${process.env.VUE_APP_BASEAPI}/Bike/Station/City/NearBy?$filter=contains(StationName%2FZh_tw%2C'${keyword}')%20or%20contains(StationAddress%2FZh_tw%2C'${keyword}')&$spatialFilter=nearby(${latitude},${longitude},1000)&$format=JSON`;
       return this.axios.get(api);
     },
     getNearByAvlData(longitude = 0, latitude = 0) {
-      const api = `${process.env.VUE_APP_BASEAPI}/Bike/Availability/NearBy?$spatialFilter=nearby(${latitude},${longitude},1000)`;
+      const api = `${process.env.VUE_APP_BASEAPI}/Bike/Availability/City/NearBy?$spatialFilter=nearby(${latitude},${longitude},1000)`;
       return this.axios.get(api);
     },
     recombineStnData(tempStnData, tempAvlData) {
